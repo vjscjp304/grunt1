@@ -1,0 +1,34 @@
+image: voxxit/grunt
+git:
+  path: github.com/vjscjp304/grunt1
+script:
+  - echo "build commands"
+  - .shipped/build
+  - .shipped/test
+clone:
+  path: github.com/vjscjp304/grunt1
+build:
+  image: voxxit/grunt
+  commands:
+    - echo "build commands"
+    - .shipped/build
+    - .shipped/test
+publish:
+  docker:
+    file: ./Dockerfile
+    username: $$bintray_user
+    password: $$bintray_api_key
+    registry: $$bintray_registry
+    repo: $$bintray_repo
+    email: $$bintray_user_email
+    tag: $$COMMIT
+    
+
+
+notify:
+  webhook:
+    image: shippedrepos-docker-drone.bintray.io/drone-webhook
+    urls:
+      - "https://api.ciscoshipped.io/webhooks/drone"
+    on_success: true
+    on_failure: true
